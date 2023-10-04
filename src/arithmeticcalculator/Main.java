@@ -1,4 +1,4 @@
-package projects.arithmeticcalculator;
+package arithmeticcalculator;
 
 /*
  * This is a simple arithmetic calculator that can add, subtract, multiply, and divide two numbers.

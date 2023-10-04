@@ -1,4 +1,4 @@
-package projects.arithmeticcalculator;
+package arithmeticcalculator;
 
 public class CalculatorView {
 

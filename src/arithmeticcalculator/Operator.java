@@ -1,4 +1,4 @@
-package projects.arithmeticcalculator;
+package arithmeticcalculator;
 
 public enum Operator {
     ADD, SUBTRACT, MULTIPLY, DIVIDE;
