@@ -1,18 +1,18 @@
-package gorcerystore;
+package onlineshopping.views;
 
 import onlineshopping.models.Product;
 
 import java.util.ArrayList;
 
-class GroceryStoreView {
+public class OnlineShoppingView {
     private final String ownerName;
     private final String systemName = "System";
 
-    public GroceryStoreView(String name) {
+    public OnlineShoppingView(String name) {
         this.ownerName = name;
     }
 
-    public void showShoppingList(ArrayList<onlineshopping.models.Product> products) {
+    public void showShoppingList(ArrayList<Product> products) {
         if (products.isEmpty()) {
             warnForEmptyProducts();
             return;
@@ -20,7 +20,7 @@ class GroceryStoreView {
 
         System.out.println("--- Welcome to " + ownerName.toUpperCase() + "'s Grocery Store ---\n");
         System.out.println("Here is the list of items we have in stock:");
-        for (onlineshopping.models.Product product : products) {
+        for (Product product : products) {
             String formatted = String.format("[%s] %s ₱%s", product.getKey(), product.getProductName(), product.getPrice());
             System.out.println(formatted);
         }
@@ -59,9 +59,9 @@ class GroceryStoreView {
     }
 
 
-    public void displayOrder(int orderId, int quantity, ArrayList<onlineshopping.models.Product> products) {
+    public void displayOrder(int orderId, int quantity, ArrayList<Product> products) {
         // Try to find the product if present in the product lists
-        onlineshopping.models.Product selectedProduct = null;
+        Product selectedProduct = null;
         for (Product product : products) {
             if (product.getKey() == orderId) {
                 selectedProduct = product;

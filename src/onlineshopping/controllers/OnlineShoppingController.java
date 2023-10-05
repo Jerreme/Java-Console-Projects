@@ -1,22 +1,22 @@
-package gorcerystore;
+package onlineshopping.controllers;
 
 import onlineshopping.models.Product;
+import onlineshopping.views.OnlineShoppingView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+public class OnlineShoppingController {
+    private final ArrayList<Product> shoppingList;
+    private final OnlineShoppingView onlineShoppingView;
 
-public class GroceryStoreController {
-    private final ArrayList<onlineshopping.models.Product> shoppingList;
-    private final GroceryStoreView groceryStoreView;
-
-    public GroceryStoreController(ArrayList<onlineshopping.models.Product> shoppingList, GroceryStoreView groceryStoreView) {
+    public OnlineShoppingController(ArrayList<Product> shoppingList, OnlineShoppingView groceryStoreView) {
         this.shoppingList = shoppingList;
-        this.groceryStoreView = groceryStoreView;
+        this.onlineShoppingView = groceryStoreView;
     }
 
-    public static ArrayList<onlineshopping.models.Product> generateProductsFromArray(String[] productNames, int[] productPrices) {
-        final ArrayList<onlineshopping.models.Product> products = new ArrayList<>();
+    public static ArrayList<Product> generateProductsFromArray(String[] productNames, int[] productPrices) {
+        final ArrayList<Product> products = new ArrayList<>();
         for (int i = 0; i < productNames.length; i++) {
             products.add(new Product(i, productNames[i], productPrices[i]));
         }
@@ -24,23 +24,23 @@ public class GroceryStoreController {
     }
 
     public void showShoppingList() {
-        groceryStoreView.showShoppingList(shoppingList);
+        onlineShoppingView.showShoppingList(shoppingList);
     }
 
     public void closingSpiel() {
-        groceryStoreView.closingSpiel();
+        onlineShoppingView.closingSpiel();
     }
 
     public int promptOrderId() {
         int toBuy = 0;
         do {
             final Scanner scanner = new Scanner(System.in);
-            groceryStoreView.askForOrder(shoppingList.size());
+            onlineShoppingView.askForOrder(shoppingList.size());
 
             try {
                 toBuy = scanner.nextInt();
             } catch (Exception e) {
-                groceryStoreView.warnForInvalidInput();
+                onlineShoppingView.warnForInvalidInput();
             }
         } while (toBuy == 0);
         return toBuy;
@@ -50,12 +50,12 @@ public class GroceryStoreController {
         int quantity = 0;
         do {
             final Scanner scanner = new Scanner(System.in);
-            groceryStoreView.askForQuantity();
+            onlineShoppingView.askForQuantity();
 
             try {
                 quantity = scanner.nextInt();
             } catch (Exception e) {
-                groceryStoreView.warnForInvalidInput();
+                onlineShoppingView.warnForInvalidInput();
             }
         } while (quantity == 0);
         return quantity;
@@ -64,10 +64,10 @@ public class GroceryStoreController {
     public void displayOrder(int orderId, int quantity) {
         // Guard Clause
         if (orderId == 0 || quantity == 0) {
-            groceryStoreView.warnForInvalidOrder();
+            onlineShoppingView.warnForInvalidOrder();
             return;
         }
-        groceryStoreView.displayOrder(orderId, quantity, shoppingList);
+        onlineShoppingView.displayOrder(orderId, quantity, shoppingList);
     }
 
 }

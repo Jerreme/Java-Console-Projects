@@ -1,20 +1,23 @@
 package gorcerystore;
 
+import onlineshopping.controllers.OnlineShoppingController;
+import onlineshopping.views.OnlineShoppingView;
+
 public class GroceryStore {
 
     public static void main(String[] args) {
         String[] kItems = {"Milk", "Eggs", "Bread", "Cheese", "Chicken", "Beef", "Pork"};
         int[] kPrices = {95, 50, 45, 100, 150, 200, 180};
 
-        GroceryStoreView groceryStoreView = new GroceryStoreView("ji");
-        GroceryStoreController groceryStoreController = new GroceryStoreController(GroceryStoreController.generateProductsFromArray(kItems, kPrices), groceryStoreView);
+        OnlineShoppingView onlineShoppingView = new OnlineShoppingView("ji");
+        OnlineShoppingController onlineShoppingController = new OnlineShoppingController(OnlineShoppingController.generateProductsFromArray(kItems, kPrices), onlineShoppingView);
 
-        groceryStoreController.showShoppingList();
+        onlineShoppingController.showShoppingList();
 
-        int orderId = groceryStoreController.promptOrderId();
-        int quantity = groceryStoreController.promptQuantity();
+        int orderId = onlineShoppingController.promptOrderId();
+        int quantity = onlineShoppingController.promptQuantity();
 
-        groceryStoreController.displayOrder(orderId, quantity);
-        groceryStoreController.closingSpiel();
+        onlineShoppingController.displayOrder(orderId, quantity);
+        onlineShoppingController.closingSpiel();
     }
 }
