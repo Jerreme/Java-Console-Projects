@@ -1,22 +1,22 @@
 package onlineshopping.routes;
 
-import onlineshopping.controllers.AuthenticationController;
 import onlineshopping.controllers.Navigator;
+import onlineshopping.controllers.RegistrationController;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.interfaces.Route;
 import onlineshopping.models.RegistrationCredential;
-import onlineshopping.views.Authentication;
+import onlineshopping.views.RegistrationPageView;
 
 public class RegistrationPage implements Route {
     @Override
     public void build() {
-        final Authentication authView = new Authentication();
-        final AuthenticationController authController = new AuthenticationController(authView);
-        final RegistrationCredential userForRegistration = authController.promptRegistration();
+        final RegistrationPageView view = new RegistrationPageView();
+        final RegistrationController controller = new RegistrationController(view);
+        final RegistrationCredential userForRegistration = controller.promptRegistration();
 
         if (userForRegistration == null) return;
-        
-        final Credential user = authController.submitRegistrationCredential(userForRegistration);
+
+        final Credential user = controller.submitRegistrationCredential(userForRegistration);
         if (user == null) {
             build();
         } else {

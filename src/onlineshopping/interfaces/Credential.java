@@ -1,7 +1,7 @@
 package onlineshopping.interfaces;
 
 public interface Credential {
-    public String getUsername();
+    String username();
 
-    public String getPassword();
+    String password();
 }

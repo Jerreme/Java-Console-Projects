@@ -2,13 +2,13 @@ package onlineshopping.routes;
 
 import onlineshopping.controllers.Navigator;
 import onlineshopping.interfaces.Route;
-import onlineshopping.views.Authentication;
+import onlineshopping.views.IntroPageView;
 
 public class IntroPage implements Route {
 
     @Override
     public void build() {
-        final Authentication authView = new Authentication();
+        final IntroPageView authView = new IntroPageView();
         authView.showAuthScreen();
 
         final Navigator navigator = new Navigator();
@@ -19,8 +19,8 @@ public class IntroPage implements Route {
     }
 
     Route exitRoute = () -> {
-        final Authentication authView = new Authentication();
-        authView.showAuthScreen();
+        final IntroPageView authView = new IntroPageView();
+        authView.showOutro();
         System.exit(0);
     };
 }

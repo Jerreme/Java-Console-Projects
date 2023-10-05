@@ -1,21 +1,21 @@
 package onlineshopping.routes;
 
-import onlineshopping.controllers.AuthenticationController;
+import onlineshopping.controllers.LoginController;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.interfaces.Route;
 import onlineshopping.models.LoginCredential;
-import onlineshopping.views.Authentication;
+import onlineshopping.views.LoginPageView;
 
 public class LoginPage implements Route {
     @Override
     public void build() {
-        final Authentication authView = new Authentication();
-        final AuthenticationController authController = new AuthenticationController(authView);
-        final LoginCredential userForLogin = authController.promptLogin();
+        final LoginPageView view = new LoginPageView();
+        final LoginController controller = new LoginController(view);
+        final LoginCredential userForLogin = controller.promptLogin();
 
         if (userForLogin == null) return;
 
-        final Credential user = authController.submitLoginCredential(userForLogin);
+        final Credential user = controller.submitLoginCredential(userForLogin);
         if (user == null) {
             build();
         } else {

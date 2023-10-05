@@ -2,21 +2,7 @@ package onlineshopping.views;
 
 import onlineshopping.interfaces.Messenger;
 
-public class Authentication extends Messenger {
-    public void showAuthScreen() {
-        println("\nWelcome to the Online Shopping Console App!");
-        println("[1] Login");
-        println("[2] Register");
-        println("[0] Exit");
-    }
-
-    public void showOutro() {
-        println("\n-------- Exit --------");
-    }
-
-    public void showLogin() {
-        println("\n-------- Login --------");
-    }
+public class RegistrationPageView extends Messenger {
 
     public void showRegistration() {
         println("\n-------- Registration --------");
@@ -34,24 +20,12 @@ public class Authentication extends Messenger {
         print("Confirm password: ");
     }
 
-    public void showLoginFailed() {
-        systemMessage("Check your username and password.");
-    }
-
     public void showRegistrationFailed() {
         systemMessage("Registration failed. Passwords does not match.");
     }
-
-    public void showLoginAttemptCount(int remainingAttempt) {
-        systemMessage("You have " + remainingAttempt + " login attempt(s) left.");
-    }
-
+    
     public void showRegistrationAttemptCount(int remainingAttempt) {
         systemMessage("You have " + remainingAttempt + " registration attempt(s) left.");
-    }
-
-    public void warnMaxLoginAttempt() {
-        systemMessage("You have reached the maximum login attempt.");
     }
 
     public void warnMaxRegistrationAttempt() {
