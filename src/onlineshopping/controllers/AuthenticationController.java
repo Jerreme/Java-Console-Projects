@@ -3,7 +3,6 @@ package onlineshopping.controllers;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.models.LoginCredential;
 import onlineshopping.models.RegistrationCredential;
-import onlineshopping.models.UserCredential;
 import onlineshopping.views.Authentication;
 import onlineshopping.views.Warn;
 
@@ -24,35 +23,39 @@ public class AuthenticationController {
         this.view = view;
     }
 
-    private void checkLoginAttempt() {
+    private boolean isCanLogin() {
         if (loginAttemptCound == 0) {
-            return;
+            return true;
         }
         if (loginAttemptCound >= MAX_LOGIN_ATTEMPT) {
             loginAttemptCound = 0;
             view.warnMaxLoginAttempt();
             Navigator.gotoLastRoute();
+            return false;
         } else {
             view.showLoginAttemptCount(MAX_LOGIN_ATTEMPT - loginAttemptCound);
+            return true;
         }
     }
 
-    private void checkRegistrationAttempt() {
+    private boolean isCanRegister() {
         if (registrationAttemptCount == 0) {
-            return;
+            return true;
         }
         if (registrationAttemptCount >= MAX_LOGIN_ATTEMPT) {
             registrationAttemptCount = 0;
             view.warnMaxRegistrationAttempt();
             Navigator.gotoLastRoute();
+            return false;
         } else {
             view.showRegistrationAttemptCount(MAX_REGISTRATION_ATTEMPT - registrationAttemptCount);
+            return true;
         }
     }
 
     public LoginCredential promptLogin() {
         // Check login attempts first
-        checkLoginAttempt();
+        if (!isCanLogin()) return null;
 
         Scanner scanner = new Scanner(System.in);
         view.showLogin();
@@ -85,8 +88,8 @@ public class AuthenticationController {
     }
 
     public RegistrationCredential promptRegistration() {
-        // Check registration attempt first
-        checkRegistrationAttempt();
+        // Check registration attempts first
+        if (!isCanRegister()) return null;
 
         Scanner scanner = new Scanner(System.in);
         view.showRegistration();

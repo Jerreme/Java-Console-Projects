@@ -1,58 +1,64 @@
 package onlineshopping.views;
 
-public class Authentication {
+import onlineshopping.interfaces.Messenger;
+
+public class Authentication extends Messenger {
     public void showAuthScreen() {
-        System.out.println("\nWelcome to the Online Shopping Console App!");
-        System.out.println("[1] Login");
-        System.out.println("[2] Register");
-        System.out.println("[0] Exit");
+        println("\nWelcome to the Online Shopping Console App!");
+        println("[1] Login");
+        println("[2] Register");
+        println("[0] Exit");
+    }
+
+    public void showOutro() {
+        println("\n-------- Exit --------");
     }
 
     public void showLogin() {
-        System.out.println("\n-------- Login --------");
+        println("\n-------- Login --------");
     }
 
     public void showRegistration() {
-        System.out.println("\n-------- Registration --------");
+        println("\n-------- Registration --------");
     }
 
     public void showUsername() {
-        System.out.print("Enter username: ");
+        print("Enter username: ");
     }
 
     public void showPassword() {
-        System.out.print("Enter password: ");
+        print("Enter password: ");
     }
 
     public void showConfirmPassword() {
-        System.out.print("Confirm password: ");
+        print("Confirm password: ");
     }
 
     public void showLoginFailed() {
-        System.out.println("[system] Check your username and password.");
+        systemMessage("Check your username and password.");
     }
 
     public void showRegistrationFailed() {
-        System.out.println("[system] Registration failed. Passwords does not match.");
+        systemMessage("Registration failed. Passwords does not match.");
     }
 
     public void showLoginAttemptCount(int remainingAttempt) {
-        System.out.println("[system] You have " + remainingAttempt + " login attempt(s) left.");
+        systemMessage("You have " + remainingAttempt + " login attempt(s) left.");
     }
 
     public void showRegistrationAttemptCount(int remainingAttempt) {
-        System.out.println("[system] You have " + remainingAttempt + " registration attempt(s) left.");
+        systemMessage("You have " + remainingAttempt + " registration attempt(s) left.");
     }
 
     public void warnMaxLoginAttempt() {
-        System.out.println("[system] You have reached the maximum login attempt.");
+        systemMessage("You have reached the maximum login attempt.");
     }
 
     public void warnMaxRegistrationAttempt() {
-        System.out.println("[system] You have reached the maximum registration attempt.");
+        systemMessage("You have reached the maximum registration attempt.");
     }
 
     public void warnDuplicateRegistration() {
-        System.out.println("[system] Username already exists.");
+        systemMessage("Username already exists.");
     }
 }

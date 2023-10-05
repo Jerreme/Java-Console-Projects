@@ -1,5 +1,6 @@
 package onlineshopping.controllers;
 
+import onlineshopping.interfaces.Route;
 import onlineshopping.views.Warn;
 
 import java.util.HashMap;
@@ -7,35 +8,31 @@ import java.util.Map;
 
 public class Navigator {
 
-    private Map<Integer, Runnable> mapOfRoutes = new HashMap<>();
-    private static Runnable lastRoute;
-    private static Runnable currentRoute;
+    private Map<Integer, Route> mapOfRoutes = new HashMap<>();
+    private static Route lastRoute;
+    private static Route currentRoute;
 
-    public static void runInitialRoute(Runnable runnable) {
-        currentRoute = runnable;
-        runnable.run();
+    public static void runInitialRoute(Route route) {
+        currentRoute = route;
+        route.build();
     }
 
     public static void gotoLastRoute() {
         if (lastRoute != null) {
             currentRoute = lastRoute;
-            lastRoute.run();
+            lastRoute.build();
         } else {
             Warn.debugMessageAndExit("No last route found!", -1);
         }
     }
 
-    public void addRoute(int keyBind, Runnable runnable) {
-        mapOfRoutes.put(keyBind, runnable);
+    public void addRoute(int keyBind, Route route) {
+        mapOfRoutes.put(keyBind, route);
     }
 
     public void runPrompt() {
         int keyBind = getInput();
-        if (keyBind == 0 && lastRoute != null) {
-            lastRoute.run();
-            return;
-        }
-        run(keyBind);
+        runRoute(keyBind);
     }
 
     private int getInput() {
@@ -53,14 +50,14 @@ public class Navigator {
         }
     }
 
-    private void run(int keyBind) {
-        Runnable route = mapOfRoutes.get(keyBind);
+    private void runRoute(int keyBind) {
+        Route route = mapOfRoutes.get(keyBind);
         if (route == null) {
             Warn.debugMessageAndExit("No routes found!", -1);
         } else {
             lastRoute = currentRoute;
             currentRoute = route;
-            route.run();
+            route.build();
         }
     }
 }
