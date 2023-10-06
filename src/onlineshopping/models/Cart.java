@@ -3,17 +3,19 @@ package onlineshopping.models;
 import java.util.ArrayList;
 
 public class Cart {
-    private final ArrayList<Product> products;
+    private static final ArrayList<Product> products = new ArrayList<>();
 
-    public Cart(ArrayList<Product> products) {
-        this.products = products;
-    }
-
-    public ArrayList<Product> getProducts() {
+    public static ArrayList<Product> getCartItems() {
         return products;
     }
 
-    public int getProductsLength() {
-        return products.size();
+    public static void setCartItems(ArrayList<Product> products) {
+        Cart.products.clear();
+        Cart.products.addAll(products);
     }
+
+    public static void addToCart(Product product) {
+        products.add(product);
+    }
+
 }

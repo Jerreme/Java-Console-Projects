@@ -4,7 +4,6 @@ import onlineshopping.controllers.Navigator;
 import onlineshopping.controllers.RegistrationController;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.interfaces.Route;
-import onlineshopping.models.RegistrationCredential;
 import onlineshopping.views.RegistrationPageView;
 
 public class RegistrationPage implements Route {
@@ -12,7 +11,7 @@ public class RegistrationPage implements Route {
     public void build() {
         final RegistrationPageView view = new RegistrationPageView();
         final RegistrationController controller = new RegistrationController(view);
-        final RegistrationCredential userForRegistration = controller.promptRegistration();
+        final Credential userForRegistration = controller.promptRegistration();
 
         if (userForRegistration == null) return;
 

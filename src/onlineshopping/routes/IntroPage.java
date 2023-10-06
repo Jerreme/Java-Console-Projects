@@ -8,8 +8,8 @@ public class IntroPage implements Route {
 
     @Override
     public void build() {
-        final IntroPageView authView = new IntroPageView();
-        authView.showAuthScreen();
+        final IntroPageView view = new IntroPageView();
+        view.showAuthScreen();
 
         final Navigator navigator = new Navigator();
         navigator.addRoute(1, new LoginPage());

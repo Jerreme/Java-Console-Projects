@@ -8,40 +8,60 @@ import java.util.Map;
 
 public class Navigator {
 
-    private Map<Integer, Route> mapOfRoutes = new HashMap<>();
     private static Route lastRoute;
     private static Route currentRoute;
+    private final Map<Integer, Route> routes = new HashMap<>();
+    private final Map<Integer, Runnable> preCallbacks = new HashMap<>();
 
-    public static void runInitialRoute(Route route) {
+    public static void runRouteManually(Route route) {
+        if (currentRoute != null) {
+            lastRoute = currentRoute;
+            currentRoute.dispose();
+        }
         currentRoute = route;
-        route.build();
+        currentRoute.init();
+        currentRoute.build();
     }
 
     public static void gotoLastRoute() {
         if (lastRoute != null) {
+            currentRoute.dispose();
             currentRoute = lastRoute;
-            lastRoute.build();
+            lastRoute = null;
+            currentRoute.build();
         } else {
-            Warn.debugMessageAndExit("No last route found!", -1);
+            Warn.debugMessage("No last route found!");
+            currentRoute.build();
+        }
+    }
+
+    public static void reRunActiveRoute() {
+        if (currentRoute != null) {
+            currentRoute.dispose();
+            currentRoute.init();
+            currentRoute.build();
+        } else {
+            Warn.debugMessage("No active route found!");
         }
     }
 
     public void addRoute(int keyBind, Route route) {
-        mapOfRoutes.put(keyBind, route);
+        routes.put(keyBind, route);
+    }
+
+    public void addPreCallback(int keyBind, Runnable callback) {
+        preCallbacks.put(keyBind, callback);
     }
 
     public void runPrompt() {
-        int keyBind = getInput();
-        runRoute(keyBind);
+        runRoute(getInput());
     }
 
     private int getInput() {
-        System.out.print(">> ");
-
-        if (mapOfRoutes.isEmpty()) {
+        if (routes.isEmpty()) {
             Warn.debugMessageAndExit("Routes is empty!", -1);
         }
-
+        System.out.print(">> ");
         try {
             return Integer.parseInt(new java.util.Scanner(System.in).nextLine());
         } catch (NumberFormatException e) {
@@ -51,13 +71,22 @@ public class Navigator {
     }
 
     private void runRoute(int keyBind) {
-        Route route = mapOfRoutes.get(keyBind);
-        if (route == null) {
-            Warn.debugMessageAndExit("No routes found!", -1);
-        } else {
+        if (routes.containsKey(keyBind)) {
+            currentRoute.dispose();
             lastRoute = currentRoute;
+
+            final Route route = routes.get(keyBind);
             currentRoute = route;
+
+            if (preCallbacks.containsKey(keyBind)) {
+                preCallbacks.get(keyBind).run();
+            }
+
+            route.init();
             route.build();
+        } else {
+            Warn.debugMessage("No routes found!");
+            currentRoute.build();
         }
     }
 }

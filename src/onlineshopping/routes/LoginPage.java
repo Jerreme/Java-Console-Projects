@@ -1,9 +1,10 @@
 package onlineshopping.routes;
 
 import onlineshopping.controllers.LoginController;
+import onlineshopping.controllers.Navigator;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.interfaces.Route;
-import onlineshopping.models.LoginCredential;
+import onlineshopping.models.User;
 import onlineshopping.views.LoginPageView;
 
 public class LoginPage implements Route {
@@ -11,16 +12,16 @@ public class LoginPage implements Route {
     public void build() {
         final LoginPageView view = new LoginPageView();
         final LoginController controller = new LoginController(view);
-        final LoginCredential userForLogin = controller.promptLogin();
+        final Credential userForLogin = controller.promptLogin();
 
         if (userForLogin == null) return;
 
-        final Credential user = controller.submitLoginCredential(userForLogin);
+        final User user = controller.submitLoginCredential(userForLogin);
         if (user == null) {
             build();
         } else {
-            // TODO goto shopping screen
-            System.out.println("Login success");
+            view.showLoginSuccess();
+            Navigator.runRouteManually(new HomePage());
         }
     }
 }

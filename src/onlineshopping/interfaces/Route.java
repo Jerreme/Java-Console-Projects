@@ -1,5 +1,13 @@
 package onlineshopping.interfaces;
 
 public interface Route {
-    public void build();
+    void build();
+
+    default void init() {
+
+    }
+
+    default void dispose() {
+    }
+
 }

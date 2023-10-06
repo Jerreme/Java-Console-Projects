@@ -5,7 +5,7 @@ import onlineshopping.interfaces.Messenger;
 public class RegistrationPageView extends Messenger {
 
     public void showRegistration() {
-        println("\n-------- Registration --------");
+        println("\n-------- Register --------");
     }
 
     public void showUsername() {
@@ -20,10 +20,14 @@ public class RegistrationPageView extends Messenger {
         print("Confirm password: ");
     }
 
+    public void showRegistrationSuccess() {
+        systemMessage("Registered successfully.");
+    }
+
     public void showRegistrationFailed() {
         systemMessage("Registration failed. Passwords does not match.");
     }
-    
+
     public void showRegistrationAttemptCount(int remainingAttempt) {
         systemMessage("You have " + remainingAttempt + " registration attempt(s) left.");
     }

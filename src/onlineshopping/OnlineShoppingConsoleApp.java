@@ -6,7 +6,7 @@ import onlineshopping.routes.IntroPage;
 public class OnlineShoppingConsoleApp {
 
     public static void main(String[] args) {
-        Navigator.runInitialRoute(new IntroPage());
+        Navigator.runRouteManually(new IntroPage());
     }
 
 }

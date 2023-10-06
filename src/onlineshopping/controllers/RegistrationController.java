@@ -1,9 +1,8 @@
 package onlineshopping.controllers;
 
 import onlineshopping.interfaces.Credential;
-import onlineshopping.models.RegistrationCredential;
+import onlineshopping.models.User;
 import onlineshopping.views.RegistrationPageView;
-import onlineshopping.views.Warn;
 
 import java.util.Scanner;
 
@@ -35,7 +34,7 @@ public class RegistrationController {
     }
 
 
-    public RegistrationCredential promptRegistration() {
+    public Credential promptRegistration() {
         // Check registration attempts first
         if (!isCanRegister()) return null;
 
@@ -54,33 +53,22 @@ public class RegistrationController {
             return promptRegistration();
         }
 
-        return new RegistrationCredential(username, password);
+        return new User(username, password);
     }
 
 
     /**
      * @param registrationCredential The registration credential to be submitted
-     * @return The user credential if the registration credential is valid, null otherwise
+     * @return The user if the registration credential is valid, null otherwise
      */
-    public Credential submitRegistrationCredential(RegistrationCredential registrationCredential) {
-        Credential userCredential = registrationCredential;
-        for (Credential credential : credentialManager.getCredentials()) {
-            if (credential.username().equals(registrationCredential.username())) {
-                userCredential = null;
-                view.warnDuplicateRegistration();
-                break;
-            }
-        }
-        if (userCredential != null) {
-            credentialManager.addCredential(userCredential);
-        }
-        return userCredential;
-    }
-
-    private void debugCredentials() {
-        Warn.debugMessage("Credentials:");
-        for (Credential credential : credentialManager.getCredentials()) {
-            System.out.println(credential.username() + " | " + credential.password());
+    public User submitRegistrationCredential(Credential registrationCredential) {
+        if (credentialManager.isUSerAlreadyExist(registrationCredential.username())) {
+            view.warnDuplicateRegistration();
+            return null;
+        } else {
+            credentialManager.registerUser(registrationCredential);
+            view.showRegistrationSuccess();
+            return (User) registrationCredential;
         }
     }
 }

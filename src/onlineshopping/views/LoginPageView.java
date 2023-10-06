@@ -27,4 +27,8 @@ public class LoginPageView extends Messenger {
         systemMessage("You have reached the maximum login attempt.");
     }
 
+    public void showLoginSuccess() {
+        systemMessage("Login successfully.");
+    }
+
 }
