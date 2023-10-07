@@ -22,14 +22,13 @@ public class ProductsPage implements Route {
     public void build() {
         ProductsPageView view = new ProductsPageView();
         view.showProductsPage();
-
         ProductsPageController controller = new ProductsPageController(view);
 
         Tasker tasker = new Tasker(this.toString());
         tasker.addTask(1, controller::showProducts);
         tasker.addTask(2, controller::addToCart);
         // TODO checkout/view cart feature
-//        tasker.addTask(3, controller::checkout);
+        tasker.addTask(3, controller::checkout);
         tasker.addTask(0, this::back);
         tasker.runPrompt();
     }

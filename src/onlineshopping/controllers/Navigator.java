@@ -1,6 +1,7 @@
 package onlineshopping.controllers;
 
 import onlineshopping.interfaces.Route;
+import onlineshopping.interfaces.ExitCode;
 import onlineshopping.views.Warn;
 
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class Navigator {
 
     private int getInput() {
         if (routes.isEmpty()) {
-            Warn.debugMessageAndExit("Routes is empty!", -1);
+            Warn.debugMessageAndExit("Routes is empty!", ExitCode.EXIT_FAILURE);
         }
         System.out.print(">> ");
         try {
@@ -71,22 +72,28 @@ public class Navigator {
     }
 
     private void runRoute(int keyBind) {
-        if (routes.containsKey(keyBind)) {
-            currentRoute.dispose();
-            lastRoute = currentRoute;
-
-            final Route route = routes.get(keyBind);
-            currentRoute = route;
-
-            if (preCallbacks.containsKey(keyBind)) {
-                preCallbacks.get(keyBind).run();
-            }
-
-            route.init();
-            route.build();
-        } else {
-            Warn.debugMessage("No routes found!");
+        if (!routes.containsKey(keyBind)) {
+            Warn.systemMessage("No route found!");
             currentRoute.build();
+            return;
         }
+
+        final Route route = routes.get(keyBind);
+        if (route == null) {
+            Warn.debugMessage("Route is null!");
+            currentRoute.build();
+            return;
+        }
+
+        currentRoute.dispose();
+        lastRoute = currentRoute;
+
+        if (preCallbacks.containsKey(keyBind)) {
+            preCallbacks.get(keyBind).run();
+        }
+
+        currentRoute = route;
+        route.init();
+        route.build();
     }
 }

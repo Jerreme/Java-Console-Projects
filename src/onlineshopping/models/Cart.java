@@ -18,4 +18,15 @@ public class Cart {
         products.add(product);
     }
 
+    public static int getTotalPrice() {
+        int totalPrice = 0;
+        for (final Product product : products) {
+            totalPrice += product.getPrice();
+        }
+        return totalPrice;
+    }
+
+    public static void emptyCart() {
+        products.clear();
+    }
 }

@@ -20,7 +20,6 @@ public class LoginPage implements Route {
         if (user == null) {
             build();
         } else {
-            view.showLoginSuccess();
             Navigator.runRouteManually(new HomePage());
         }
     }

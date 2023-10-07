@@ -11,7 +11,8 @@ public class IntroPageView extends Messenger {
     }
 
     public void showOutro() {
-        println("\n-------- Exit --------");
+        printDashSeparator();
+        systemMessage("Exiting...");
     }
 
 

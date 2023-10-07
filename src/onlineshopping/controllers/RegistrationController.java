@@ -9,10 +9,9 @@ import java.util.Scanner;
 public class RegistrationController {
 
     private static final int MAX_REGISTRATION_ATTEMPT = 3;
-    private static int registrationAttemptCount = 0;
     private final RegistrationPageView view;
-
     private final CredentialManager credentialManager = new CredentialManager();
+    private static int registrationAttemptCount = 0;
 
     public RegistrationController(RegistrationPageView view) {
         this.view = view;
@@ -53,7 +52,7 @@ public class RegistrationController {
             return promptRegistration();
         }
 
-        return new User(username, password);
+        return new User(username, password, User.DEFAULT_MONEY);
     }
 
 
@@ -68,6 +67,7 @@ public class RegistrationController {
         } else {
             credentialManager.registerUser(registrationCredential);
             view.showRegistrationSuccess();
+            registrationAttemptCount = 0;
             return (User) registrationCredential;
         }
     }

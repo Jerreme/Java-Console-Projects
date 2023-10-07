@@ -5,7 +5,7 @@ import onlineshopping.interfaces.Messenger;
 public class RegistrationPageView extends Messenger {
 
     public void showRegistration() {
-        println("\n-------- Register --------");
+        printHeader("Register");
     }
 
     public void showUsername() {

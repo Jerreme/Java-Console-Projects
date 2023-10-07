@@ -35,7 +35,7 @@ public class LoginController {
         // Check login attempts first
         if (!isCanLogin()) return null;
         Scanner scanner = new Scanner(System.in);
-        
+
         view.showLogin();
         view.showUsername();
         final String username = scanner.nextLine().trim().toLowerCase();
@@ -43,7 +43,7 @@ public class LoginController {
         final String password = scanner.nextLine().trim().toLowerCase();
 
         loginAttemptCount += 1;
-        return new User(username, password);
+        return new User(username, password, User.DEFAULT_MONEY);
     }
 
     /**
@@ -52,7 +52,12 @@ public class LoginController {
      */
     public User submitLoginCredential(Credential loginCredential) {
         Credential userCredential = credentialManager.tryLogin(loginCredential);
-        if (userCredential == null) view.showLoginFailed();
+        if (userCredential == null) {
+            view.showLoginFailed();
+        } else {
+            view.showLoginSuccess();
+            loginAttemptCount = 0;
+        }
         return (User) userCredential;
     }
 }

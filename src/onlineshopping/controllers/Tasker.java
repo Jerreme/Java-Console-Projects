@@ -1,5 +1,6 @@
 package onlineshopping.controllers;
 
+import onlineshopping.interfaces.ExitCode;
 import onlineshopping.views.Warn;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class Tasker {
 
     private int getInput() {
         if (tasks.isEmpty()) {
-            Warn.debugMessageAndExit("No tasks set in " + pageName + "!", -1);
+            Warn.debugMessageAndExit("No tasks set in " + pageName + "!", ExitCode.EXIT_FAILURE);
         }
         System.out.print(">> ");
         try {
@@ -35,11 +36,14 @@ public class Tasker {
     }
 
     private void runTask(int keyBind) {
-        if (tasks.containsKey(keyBind)) {
-            tasks.get(keyBind).run();
-        } else {
-            Warn.debugMessage("No task found in " + pageName + "!");
+        if (!tasks.containsKey(keyBind)) {
+            Warn.systemMessage("No task found!");
+            Navigator.reRunActiveRoute();
+            return;
         }
+
+        final Runnable task = tasks.get(keyBind);
+        if (task != null) task.run();
     }
 
 }

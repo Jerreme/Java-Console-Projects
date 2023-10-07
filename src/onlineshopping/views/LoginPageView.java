@@ -4,7 +4,7 @@ import onlineshopping.interfaces.Messenger;
 
 public class LoginPageView extends Messenger {
     public void showLogin() {
-        println("\n-------- Login --------");
+        printHeader("Login");
     }
 
     public void showUsername() {

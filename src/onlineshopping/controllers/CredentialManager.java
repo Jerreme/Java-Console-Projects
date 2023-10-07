@@ -50,8 +50,18 @@ public class CredentialManager {
         return new ArrayList<>(credentials);
     }
 
-    public User getUser() {
+    public User getLoggedInUser() {
         return (User) loggedUser;
+    }
+
+    public void updateUser(User user) {
+        for (int i = 0; i < credentials.size(); i++) {
+            if (credentials.get(i).username().equals(user.username())) {
+                credentials.set(i, user);
+                loggedUser = user;
+                break;
+            }
+        }
     }
 
     public static void logout() {

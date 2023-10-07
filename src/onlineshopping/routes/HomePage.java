@@ -11,7 +11,7 @@ public class HomePage implements Route {
     public void init() {
         Route.super.init();
         CredentialManager credentialManager = new CredentialManager();
-        String username = credentialManager.getUser().username();
+        String username = credentialManager.getLoggedInUser().username();
         final HomePageView view = new HomePageView();
         view.welcomeUser(username);
     }
@@ -23,8 +23,9 @@ public class HomePage implements Route {
 
         final Navigator navigator = new Navigator();
         navigator.addRoute(1, new ProductsPage());
-        navigator.addRoute(2, null);
-        navigator.addRoute(3, null);
+        // TODO Purchase Logs
+        navigator.addRoute(2, new PurchaseLogsPage());
+        navigator.addRoute(3, new ProfilePage());
         navigator.addRoute(0, new IntroPage());
         navigator.addPreCallback(0, this::logout);
         navigator.runPrompt();
