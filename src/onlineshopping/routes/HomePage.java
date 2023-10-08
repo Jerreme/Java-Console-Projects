@@ -10,8 +10,7 @@ public class HomePage implements Route {
     @Override
     public void init() {
         Route.super.init();
-        CredentialManager credentialManager = new CredentialManager();
-        String username = credentialManager.getLoggedInUser().username();
+        String username = CredentialManager.getLoggedInUser().username();
         final HomePageView view = new HomePageView();
         view.welcomeUser(username);
     }

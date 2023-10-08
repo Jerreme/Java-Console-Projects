@@ -1,5 +1,6 @@
 package onlineshopping.controllers;
 
+import onlineshopping.database.UserDb;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.models.User;
 import onlineshopping.views.RegistrationPageView;
@@ -57,18 +58,18 @@ public class RegistrationController {
 
 
     /**
-     * @param registrationCredential The registration credential to be submitted
+     * @param credential The registration credential to be submitted
      * @return The user if the registration credential is valid, null otherwise
      */
-    public User submitRegistrationCredential(Credential registrationCredential) {
-        if (credentialManager.isUSerAlreadyExist(registrationCredential.username())) {
+    public User submitRegistrationCredential(Credential credential) {
+        if (credentialManager.isUSerAlreadyExist(credential.username())) {
             view.warnDuplicateRegistration();
             return null;
         } else {
-            credentialManager.registerUser(registrationCredential);
+            credentialManager.registerUser(credential);
             view.showRegistrationSuccess();
             registrationAttemptCount = 0;
-            return (User) registrationCredential;
+            return (User) credential;
         }
     }
 }

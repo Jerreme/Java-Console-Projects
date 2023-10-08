@@ -25,7 +25,7 @@ public class ProductsPageView extends Messenger {
         for (Product product : products) {
             String formatted = String.format("[%s] %s ₱%s", product.getKey(), product.getProductName(), product.getPrice());
             if (i % 3 == 0) println(formatted);
-            else print(formatted + "\t\t");
+            else print(formatted + " ".repeat(20 - formatted.length()));
             i++;
         }
 
@@ -48,19 +48,13 @@ public class ProductsPageView extends Messenger {
         systemMessage(String.format("%s has been added to cart ✓", product.getProductName()));
     }
 
-    private String generateSpaces(int nameLength) {
-        final int MAX_LENGTH = 23;
-        final int length = MAX_LENGTH - nameLength;
-        return " ".repeat(Math.max(0, length));
-    }
-
     public void showCartItems(ArrayList<Product> cartItems) {
         printHeader("Cart Items");
         int totalPrice = 0;
         for (Product product : cartItems) {
             totalPrice += product.getPrice();
             final String name = product.getProductName();
-            println(String.format("· %s%s₱%s", name, generateSpaces(name.length()), product.getPrice()));
+            println(String.format(" · %s%s₱%s", name, generateSpaces(name.length() + 1), product.getPrice()));
         }
         showTotalPrice(totalPrice);
         printDashSeparator();

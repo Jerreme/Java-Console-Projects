@@ -1,22 +1,38 @@
 package onlineshopping.views;
 
 import onlineshopping.interfaces.Messenger;
+import onlineshopping.models.Product;
 import onlineshopping.models.PurchasedLog;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class PurchaseLogsView extends Messenger {
-    public void showPurchasedLogs(PurchasedLog[] logs) {
+    public void showPurchasedLogs(ArrayList<PurchasedLog> logs) {
         printHeader("Purchased Logs");
+
         String tempDate = "";
         for (PurchasedLog log : logs) {
-            final String date = log.date().toString();
+            int totalPrice = 0;
+            ArrayList<String> products = new ArrayList<>();
+            for (Product product : log.products()) {
+                totalPrice += product.getPrice();
+                final String name = product.getProductName();
+                final String formatted = String.format(" · %s%s₱%s", name, generateSpaces(name.length() + 1), product.getPrice());
+                products.add(formatted);
+            }
+
+            final String date = log.date();
             if (!tempDate.equals(date)) {
-                println(date);
+                println(String.format("%s\t\tAmount paid: ₱%d", date, totalPrice));
                 tempDate = date;
             }
-            final String format = String.format("· %s\t%d", log.product().getProductName(), log.product().getPrice());
-            println(format);
-        }
 
+            for (String product : products) {
+                println(product);
+            }
+            newLine();
+        }
     }
 
     public void showNoPurchasesYet() {
@@ -24,6 +40,6 @@ public class PurchaseLogsView extends Messenger {
     }
 
     public void promptAnyInput() {
-        systemMessage("Press enter to continue.");
+        print("Press enter to continue.");
     }
 }

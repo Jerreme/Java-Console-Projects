@@ -1,6 +1,6 @@
 package onlineshopping.controllers;
 
-import onlineshopping.interfaces.MoneyException;
+import onlineshopping.interfaces.UserBalanceException;
 import onlineshopping.models.User;
 import onlineshopping.views.ProfilePageView;
 import onlineshopping.views.Warn;
@@ -16,12 +16,11 @@ public class ProfilePageController {
 
     public void cashIn() {
         int amount = askForAmount();
-        CredentialManager credentialManager = new CredentialManager();
         try {
-            final User newUser = credentialManager.getLoggedInUser().deposit(amount);
-            credentialManager.updateUser(newUser);
+            final User newUser = CredentialManager.getLoggedInUser().deposit(amount);
+            CredentialManager.updateUser(newUser);
             view.showSuccessDepositMessage(amount);
-        } catch (MoneyException e) {
+        } catch (UserBalanceException e) {
             view.showInvalidAmountMessage(User.MINIMUM_CASH_IN_AMOUNT, User.MAXIMUM_CASH_IN_AMOUNT);
         }
         Navigator.reRunActiveRoute();

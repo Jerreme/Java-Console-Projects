@@ -6,11 +6,13 @@ import onlineshopping.models.User;
 public class ProfilePageView extends Messenger {
 
     public void showProfilePage(User user) {
+        final String password = "*".repeat(user.password().length());
         printHeader("User Profile");
         println("username: " + user.username());
-        println("password: " + user.password());
+        println("password: " + password);
+        newLine();
         println("E-Wallet");
-        println("balance: ₱" + user.money());
+        println("balance: ₱" + user.balance());
     }
 
     public void showProfileOptions() {

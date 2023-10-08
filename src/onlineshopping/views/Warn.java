@@ -13,7 +13,7 @@ public class Warn {
     }
 
     public static void debugMessage(String message) {
-        System.out.println("[debug] " + message);
+        System.err.println("[debug] " + message);
     }
 
     public static void debugMessageAndExit(String message, ExitCode statusCode) {

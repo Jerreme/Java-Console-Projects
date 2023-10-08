@@ -51,13 +51,13 @@ public class LoginController {
      * @return The user credential if the login credential is valid, null otherwise
      */
     public User submitLoginCredential(Credential loginCredential) {
-        Credential userCredential = credentialManager.tryLogin(loginCredential);
+        User userCredential = credentialManager.tryLogin(loginCredential);
         if (userCredential == null) {
             view.showLoginFailed();
         } else {
             view.showLoginSuccess();
             loginAttemptCount = 0;
         }
-        return (User) userCredential;
+        return userCredential;
     }
 }

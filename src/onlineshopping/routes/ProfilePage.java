@@ -11,9 +11,8 @@ import onlineshopping.views.ProfilePageView;
 public class ProfilePage implements Route {
     @Override
     public void build() {
-        CredentialManager credentialManager = new CredentialManager();
         ProfilePageView view = new ProfilePageView();
-        view.showProfilePage(credentialManager.getLoggedInUser());
+        view.showProfilePage(CredentialManager.getLoggedInUser());
         view.printDashSeparator();
         view.showProfileOptions();
         ProfilePageController controller = new ProfilePageController(view);

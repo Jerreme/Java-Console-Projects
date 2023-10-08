@@ -1,7 +1,10 @@
 package onlineshopping.controllers;
 
+import onlineshopping.database.PurchasedDb;
 import onlineshopping.models.PurchasedLog;
 import onlineshopping.views.PurchaseLogsView;
+
+import java.util.ArrayList;
 
 public class PurchaseLogsController {
     final PurchaseLogsView view;
@@ -11,9 +14,12 @@ public class PurchaseLogsController {
     }
 
     public void showPurchasedLogs() {
-        final PurchasedLog[] logs = {};
+
+        final PurchasedDb db = new PurchasedDb();
+        final ArrayList<PurchasedLog> logs = db.getPurchased(CredentialManager.getLoggedInUser().username());
+
         // TODO get purchased logs from database
-        if (logs.length == 0) {
+        if (logs.isEmpty()) {
             view.showNoPurchasesYet();
         } else {
             view.showPurchasedLogs(logs);

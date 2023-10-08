@@ -1,13 +1,17 @@
 package onlineshopping.controllers;
 
-import onlineshopping.interfaces.MoneyException;
+import onlineshopping.database.PurchasedDb;
 import onlineshopping.interfaces.ExitCode;
-import onlineshopping.models.Cart;
+import onlineshopping.interfaces.UserBalanceException;
+import onlineshopping.models.CartManager;
 import onlineshopping.models.Product;
+import onlineshopping.models.PurchasedLog;
 import onlineshopping.models.User;
 import onlineshopping.views.ProductsPageView;
 import onlineshopping.views.Warn;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -35,26 +39,28 @@ public class ProductsPageController {
         if (product == null) {
             view.showProductNotFound();
         } else {
+            final String username = CredentialManager.getLoggedInUser().username();
+            CartManager.addToCart(username, product);
             view.showAddedToCart(product);
-            Cart.addToCart(product);
         }
         Navigator.reRunActiveRoute();
     }
 
     public void checkout() {
-        ArrayList<Product> cartItems = Cart.getCartItems();
+        final String username = CredentialManager.getLoggedInUser().username();
+        ArrayList<Product> cartItems = CartManager.getCartItems(username);
         if (cartItems.isEmpty()) {
             view.showEmptyCart();
             Navigator.reRunActiveRoute();
             return;
         }
         view.showCartItems(cartItems);
-        final int balance = new CredentialManager().getLoggedInUser().getWalletBalance();
+        final int balance = CredentialManager.getLoggedInUser().getWalletBalance();
         view.showWalletBalance(balance);
         view.showCartOptions();
 
         Tasker tasker = new Tasker(this.toString());
-        tasker.addTask(1, this::proceedCheckout);
+        tasker.addTask(1, this::placeOrder);
         tasker.addTask(2, this::emptyCart);
         tasker.addTask(0, null);
         tasker.runPrompt();
@@ -74,30 +80,47 @@ public class ProductsPageController {
         return productId;
     }
 
-    private void proceedCheckout() {
-        CredentialManager login = new CredentialManager();
-        final User currentUser = login.getLoggedInUser();
+    private void placeOrder() {
+        final User currentUser = CredentialManager.getLoggedInUser();
         if (currentUser == null) {
             Warn.debugMessageAndExit("No user logged in!", ExitCode.EXIT_FAILURE);
             return;
         }
 
         try {
-            final int totalPrice = Cart.getTotalPrice();
-            login.updateUser(currentUser.spend(totalPrice));
-            Cart.emptyCart();
+            // update user balance
+            final int totalPrice = CartManager.getTotalPrice();
+            CredentialManager.updateUser(currentUser.spend(totalPrice));
             view.systemMessage("Products has been checked out ✓");
-            final User updatedUser = login.getLoggedInUser();
-            final int newBalance = updatedUser.getWalletBalance();
+
+            final int newBalance = CredentialManager.getLoggedInUser().getWalletBalance();
             view.showWalletBalance(newBalance);
-            // TODO add to list of completed orders
-        } catch (MoneyException e) {
+
+            // Get current date
+            final Date date = new Date();
+            final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            final String dateString = formatter.format(date);
+
+            // Create purchased log
+            final PurchasedLog purchase = new PurchasedLog(
+                    currentUser.username(),
+                    CartManager.getCartItems(currentUser.username()),
+                    dateString
+            );
+
+            // add to db of completed orders
+            final PurchasedDb db = new PurchasedDb();
+            db.addPurchased(purchase);
+
+            // finally empty the cart
+            CartManager.emptyCart();
+        } catch (UserBalanceException e) {
             view.warnInsufficientMoney(e.getMessage());
         }
     }
 
     private void emptyCart() {
-        Cart.emptyCart();
+        CartManager.emptyCart();
         view.systemMessage("Cart has been emptied ✓");
     }
 

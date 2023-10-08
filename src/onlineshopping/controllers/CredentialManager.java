@@ -1,70 +1,54 @@
 package onlineshopping.controllers;
 
+import onlineshopping.database.UserDb;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.models.User;
 import onlineshopping.views.Warn;
 
-import java.util.ArrayList;
-
 public class CredentialManager {
-
-    private static final ArrayList<Credential> credentials = new ArrayList<>();
-    private static Credential loggedUser = null;
+    private static User loggedUser = null;
 
     public void registerUser(Credential credential) {
-        if (credential instanceof User user) {
-            if (user.username() == null || user.password() == null) {
-                Warn.debugMessage("Username or password is null!");
-                return;
-            }
-            if (user.username().equals("") || user.password().equals("")) {
-                Warn.debugMessage("Username or password is empty!");
-                return;
-            }
-        } else {
+        if (!(credential instanceof User user)) {
             Warn.debugMessage("Credential is not an instance of User!");
             return;
         }
-        credentials.add(credential);
+        if (user.username() == null || user.password() == null) {
+            Warn.debugMessage("Username or password is null!");
+            return;
+        }
+        if (user.username().isEmpty() || user.password().isEmpty()) {
+            Warn.debugMessage("Username or password is empty!");
+            return;
+        }
+        final UserDb userDb = new UserDb();
+        userDb.addUser(new User(user.username(), user.password(), User.DEFAULT_MONEY));
     }
 
-    public Credential tryLogin(Credential credential) {
-        for (Credential user : credentials) {
-            if (user.username().equals(credential.username()) &&
-                    user.password().equals(credential.password())) {
-                loggedUser = user;
-                return user;
-            }
-        }
-        return null;
+    public User tryLogin(Credential credential) {
+        final UserDb userDb = new UserDb();
+        final User user = userDb.getUser(credential);
+        CredentialManager.loggedUser = user;
+        return user;
     }
 
     public boolean isUSerAlreadyExist(String username) {
-        for (Credential user : credentials) {
-            if (user.username().equals(username)) return true;
-        }
-        return false;
+        final UserDb userDb = new UserDb();
+        return userDb.isUserAlreadyExist(username);
     }
 
-    public ArrayList<Credential> getUsers() {
-        return new ArrayList<>(credentials);
+    public static User getLoggedInUser() {
+        return CredentialManager.loggedUser;
     }
 
-    public User getLoggedInUser() {
-        return (User) loggedUser;
-    }
-
-    public void updateUser(User user) {
-        for (int i = 0; i < credentials.size(); i++) {
-            if (credentials.get(i).username().equals(user.username())) {
-                credentials.set(i, user);
-                loggedUser = user;
-                break;
-            }
-        }
+    public static void updateUser(User user) {
+        CredentialManager.loggedUser = user;
+        // Update user in database
+        final UserDb userDb = new UserDb();
+        userDb.updateUserBalance(user);
     }
 
     public static void logout() {
-        loggedUser = null;
+        CredentialManager.loggedUser = null;
     }
 }

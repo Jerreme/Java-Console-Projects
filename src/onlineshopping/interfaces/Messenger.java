@@ -2,7 +2,7 @@ package onlineshopping.interfaces;
 
 public class Messenger {
     public final String SYSTEM_NAME = "system";
-    final int TOTAL_WIDTH = 30;
+    public final int TOTAL_WIDTH = 40;
 
     public void print(String message) {
         System.out.print(message);
@@ -27,17 +27,20 @@ public class Messenger {
             return;
         }
         final int dashLength = getDashLength(title);
-        final String dashesLeft = "-".repeat(dashLength / 2);
-        final String dashesRight = "-".repeat(dashLength / 2);
+        final String dashesLeft = "·".repeat(dashLength / 2);
+        final String dashesRight = "·".repeat(dashLength / 2);
         println(String.format("%s %s %s", dashesLeft, title, dashesRight));
     }
 
     public void printDashSeparator() {
-        println("-".repeat(TOTAL_WIDTH + 2));
+        println(".".repeat(TOTAL_WIDTH + 2));
     }
 
     private int getDashLength(String title) {
         return TOTAL_WIDTH - title.length();
     }
 
+    public String generateSpaces(int length) {
+        return " ".repeat(TOTAL_WIDTH - (length + 4));
+    }
 }
