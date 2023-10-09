@@ -38,7 +38,7 @@ public class Tasker {
     private void runTask(int keyBind) {
         if (!tasks.containsKey(keyBind)) {
             Warn.systemMessage("No task found!");
-            Navigator.reRunActiveRoute();
+            Navigator.rebuildActiveRoute();
             return;
         }
 

@@ -21,7 +21,7 @@ public class IntroPage implements Route {
     Route exitRoute = () -> {
         final IntroPageView authView = new IntroPageView();
         authView.showOutro();
-        System.exit(0);
+//        System.exit(0);
     };
 }
 

@@ -25,13 +25,13 @@ public class ProductsPageController {
 
     public void showProducts() {
         view.showProducts(ProductsManager.getProducts());
-        Navigator.reRunActiveRoute();
+        Navigator.rebuildActiveRoute();
     }
 
     public void addToCart() {
         int productId = promptProductId();
         if (productId == 0) {
-            Navigator.reRunActiveRoute();
+            Navigator.rebuildActiveRoute();
             return;
         }
 
@@ -43,7 +43,7 @@ public class ProductsPageController {
             CartManager.addToCart(username, product);
             view.showAddedToCart(product);
         }
-        Navigator.reRunActiveRoute();
+        Navigator.rebuildActiveRoute();
     }
 
     public void checkout() {
@@ -51,7 +51,7 @@ public class ProductsPageController {
         ArrayList<Product> cartItems = CartManager.getCartItems(username);
         if (cartItems.isEmpty()) {
             view.showEmptyCart();
-            Navigator.reRunActiveRoute();
+            Navigator.rebuildActiveRoute();
             return;
         }
         view.showCartItems(cartItems);
@@ -64,7 +64,7 @@ public class ProductsPageController {
         tasker.addTask(2, this::emptyCart);
         tasker.addTask(0, null);
         tasker.runPrompt();
-        Navigator.reRunActiveRoute();
+        Navigator.rebuildActiveRoute();
     }
 
     private int promptProductId() {

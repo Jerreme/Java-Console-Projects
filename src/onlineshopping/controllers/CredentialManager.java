@@ -2,35 +2,65 @@ package onlineshopping.controllers;
 
 import onlineshopping.database.UserDb;
 import onlineshopping.interfaces.Credential;
+import onlineshopping.models.Admin;
 import onlineshopping.models.User;
 import onlineshopping.views.Warn;
 
+import java.util.ArrayList;
+
 public class CredentialManager {
     private static User loggedUser = null;
+    private static Admin loggedAdmin = null;
 
-    public void registerUser(Credential credential) {
-        if (!(credential instanceof User user)) {
-            Warn.debugMessage("Credential is not an instance of User!");
-            return;
-        }
-        if (user.username() == null || user.password() == null) {
-            Warn.debugMessage("Username or password is null!");
-            return;
-        }
-        if (user.username().isEmpty() || user.password().isEmpty()) {
-            Warn.debugMessage("Username or password is empty!");
-            return;
-        }
+    public void registerUser(User user) {
+        if (!isCredentialValidd(user)) return;
         final UserDb userDb = new UserDb();
-        userDb.addUser(new User(user.username(), user.password(), User.DEFAULT_MONEY));
+        userDb.addUser(user);
     }
 
-    public User tryLogin(Credential credential) {
+    public ArrayList<User> getAllUsers() {
+        final UserDb userDb = new UserDb();
+        return userDb.getAllUsers();
+    }
+
+    public void registerAdmin(Admin admin) {
+        if (!isCredentialValidd(admin)) return;
+        final UserDb userDb = new UserDb();
+        userDb.addAdmin(admin);
+    }
+
+    public ArrayList<Admin> getAllAdmins() {
+        final UserDb userDb = new UserDb();
+        return userDb.getAllAdmins();
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private boolean isCredentialValidd(Credential credential) {
+        if (credential.username() == null || credential.password() == null) {
+            Warn.debugMessage("Username or password is null!");
+            return false;
+        }
+        if (credential.username().isEmpty() || credential.password().isEmpty()) {
+            Warn.debugMessage("Username or password is empty!");
+            return false;
+        }
+        return true;
+    }
+
+    public User tryLoginAsUser(Credential credential) {
         final UserDb userDb = new UserDb();
         final User user = userDb.getUser(credential);
         CredentialManager.loggedUser = user;
         return user;
     }
+
+    public Admin tryLoginAsAdmin(Credential credential) {
+        final UserDb userDb = new UserDb();
+        final Admin admin = userDb.getAdmin(credential);
+        CredentialManager.loggedAdmin = admin;
+        return admin;
+    }
+
 
     public boolean isUSerAlreadyExist(String username) {
         final UserDb userDb = new UserDb();
@@ -39,6 +69,10 @@ public class CredentialManager {
 
     public static User getLoggedInUser() {
         return CredentialManager.loggedUser;
+    }
+
+    public static Admin getLoggedInAdmin() {
+        return CredentialManager.loggedAdmin;
     }
 
     public static void updateUser(User user) {
@@ -50,5 +84,6 @@ public class CredentialManager {
 
     public static void logout() {
         CredentialManager.loggedUser = null;
+        CredentialManager.loggedAdmin = null;
     }
 }

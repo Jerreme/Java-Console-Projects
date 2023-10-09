@@ -44,6 +44,14 @@ public class DatabaseHandler {
         }
     }
 
+    public static void createAdminTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS admins (\n"
+                + "	username TEXT PRIMARY KEY NOT NULL,\n"
+                + "	password TEXT NOT NULL\n"
+                + ")";
+        createTable(sql);
+    }
+    
     public static void createUserTable() {
         String sql = "CREATE TABLE IF NOT EXISTS users (\n"
                 + "	username TEXT PRIMARY KEY NOT NULL,\n"

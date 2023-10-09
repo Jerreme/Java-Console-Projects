@@ -12,6 +12,7 @@ public class OnlineShoppingConsoleApp {
     }
 
     private static void initDatabaseTables() {
+        DatabaseHandler.createAdminTable();
         DatabaseHandler.createUserTable();
         DatabaseHandler.createCartTable();
         DatabaseHandler.createProductTable();

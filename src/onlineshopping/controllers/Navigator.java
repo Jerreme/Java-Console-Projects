@@ -36,10 +36,9 @@ public class Navigator {
         }
     }
 
-    public static void reRunActiveRoute() {
+    public static void rebuildActiveRoute() {
         if (currentRoute != null) {
             currentRoute.dispose();
-            currentRoute.init();
             currentRoute.build();
         } else {
             Warn.debugMessage("No active route found!");

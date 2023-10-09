@@ -3,7 +3,7 @@ package onlineshopping.views;
 import onlineshopping.interfaces.Messenger;
 
 public class HomePageView extends Messenger {
-    public void showAuthScreen() {
+    public void showHomePageOptions() {
         printHeader("Home");
         println("[1] Buy Products");
         println("[2] View Purchase Logs");

@@ -4,7 +4,6 @@ import onlineshopping.interfaces.Messenger;
 import onlineshopping.models.Product;
 import onlineshopping.models.PurchasedLog;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PurchaseLogsView extends Messenger {
@@ -18,7 +17,8 @@ public class PurchaseLogsView extends Messenger {
             for (Product product : log.products()) {
                 totalPrice += product.getPrice();
                 final String name = product.getProductName();
-                final String formatted = String.format(" · %s%s₱%s", name, generateSpaces(name.length() + 1), product.getPrice());
+                final String formatted = String.format(" · %s%s₱%s",
+                        name, generateSpaces(name.length() + 1), product.getPrice());
                 products.add(formatted);
             }
 

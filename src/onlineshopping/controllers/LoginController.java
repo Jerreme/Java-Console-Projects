@@ -1,6 +1,7 @@
 package onlineshopping.controllers;
 
 import onlineshopping.interfaces.Credential;
+import onlineshopping.models.Admin;
 import onlineshopping.models.User;
 import onlineshopping.views.LoginPageView;
 
@@ -8,11 +9,10 @@ import java.util.Scanner;
 
 public class LoginController {
 
+    private static final int MAX_LOGIN_ATTEMPT = 3;
+    private static int loginAttemptCount = 0;
     private final LoginPageView view;
     private final CredentialManager credentialManager = new CredentialManager();
-    private static int loginAttemptCount = 0;
-
-    private static final int MAX_LOGIN_ATTEMPT = 3;
 
     public LoginController(LoginPageView view) {
         this.view = view;
@@ -23,7 +23,6 @@ public class LoginController {
         if (loginAttemptCount >= MAX_LOGIN_ATTEMPT) {
             loginAttemptCount = 0;
             view.warnMaxLoginAttempt();
-            Navigator.gotoLastRoute();
             return false;
         } else {
             view.showLoginAttemptCount(MAX_LOGIN_ATTEMPT - loginAttemptCount);
@@ -43,15 +42,22 @@ public class LoginController {
         final String password = scanner.nextLine().trim().toLowerCase();
 
         loginAttemptCount += 1;
-        return new User(username, password, User.DEFAULT_MONEY);
+        if (username.contains("admin-")) return new Admin(username, password);
+        else return new User(username, password, User.DEFAULT_MONEY);
     }
 
     /**
      * @param loginCredential The login credential to be submitted
      * @return The user credential if the login credential is valid, null otherwise
      */
-    public User submitLoginCredential(Credential loginCredential) {
-        User userCredential = credentialManager.tryLogin(loginCredential);
+    public Credential submitLoginCredential(Credential loginCredential) {
+        final Credential userCredential;
+        if (loginCredential instanceof Admin) {
+            userCredential = credentialManager.tryLoginAsAdmin(loginCredential);
+        } else {
+            userCredential = credentialManager.tryLoginAsUser(loginCredential);
+        }
+
         if (userCredential == null) {
             view.showLoginFailed();
         } else {

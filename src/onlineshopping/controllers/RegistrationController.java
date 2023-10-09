@@ -2,6 +2,7 @@ package onlineshopping.controllers;
 
 import onlineshopping.database.UserDb;
 import onlineshopping.interfaces.Credential;
+import onlineshopping.models.Admin;
 import onlineshopping.models.User;
 import onlineshopping.views.RegistrationPageView;
 
@@ -53,23 +54,30 @@ public class RegistrationController {
             return promptRegistration();
         }
 
-        return new User(username, password, User.DEFAULT_MONEY);
+        if (username.contains("admin-")) return new Admin(username, password);
+        else return new User(username, password, User.DEFAULT_MONEY);
     }
 
 
     /**
-     * @param credential The registration credential to be submitted
+     * @param regCredential The registration credential to be submitted
      * @return The user if the registration credential is valid, null otherwise
      */
-    public User submitRegistrationCredential(Credential credential) {
-        if (credentialManager.isUSerAlreadyExist(credential.username())) {
+    public Credential submitRegistrationCredential(Credential regCredential) {
+
+        if (credentialManager.isUSerAlreadyExist(regCredential.username())) {
             view.warnDuplicateRegistration();
             return null;
         } else {
-            credentialManager.registerUser(credential);
+            if (regCredential instanceof Admin) {
+                credentialManager.registerAdmin((Admin) regCredential);
+            } else {
+                credentialManager.registerUser((User) regCredential);
+            }
+
             view.showRegistrationSuccess();
             registrationAttemptCount = 0;
-            return (User) credential;
+            return regCredential;
         }
     }
 }

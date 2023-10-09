@@ -10,7 +10,7 @@ public class HomePage implements Route {
     @Override
     public void init() {
         Route.super.init();
-        String username = CredentialManager.getLoggedInUser().username();
+        final String username = CredentialManager.getLoggedInUser().username();
         final HomePageView view = new HomePageView();
         view.welcomeUser(username);
     }
@@ -18,11 +18,10 @@ public class HomePage implements Route {
     @Override
     public void build() {
         final HomePageView view = new HomePageView();
-        view.showAuthScreen();
+        view.showHomePageOptions();
 
         final Navigator navigator = new Navigator();
         navigator.addRoute(1, new ProductsPage());
-        // TODO Purchase Logs
         navigator.addRoute(2, new PurchaseLogsPage());
         navigator.addRoute(3, new ProfilePage());
         navigator.addRoute(0, new IntroPage());

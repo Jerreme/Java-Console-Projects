@@ -9,14 +9,14 @@ import onlineshopping.controllers.ProductsPageController;
 
 public class ProductsPage implements Route {
 
-    @Override
-    public void init() {
-        ProductsManager.setProducts(ProductsManager.generateProductsFromArray(
-                new String[]{"Milk", "Eggs", "Bread", "Cheese", "Chicken", "Beef", "Pork"},
-                new int[]{95, 50, 45, 100, 150, 200, 180}
-        ));
-        Route.super.init();
-    }
+//    @Override
+//    public void init() {
+//        ProductsManager.setProducts(ProductsManager.generateProductsFromArray(
+//                new String[]{"Milk", "Eggs", "Bread", "Cheese", "Chicken", "Beef", "Pork"},
+//                new int[]{95, 50, 45, 100, 150, 200, 180}
+//        ));
+//        Route.super.init();
+//    }
 
     @Override
     public void build() {
@@ -27,7 +27,6 @@ public class ProductsPage implements Route {
         Tasker tasker = new Tasker(this.toString());
         tasker.addTask(1, controller::showProducts);
         tasker.addTask(2, controller::addToCart);
-        // TODO checkout/view cart feature
         tasker.addTask(3, controller::checkout);
         tasker.addTask(0, this::back);
         tasker.runPrompt();

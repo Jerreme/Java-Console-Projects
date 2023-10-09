@@ -16,20 +16,21 @@ public class ProductsPageView extends Messenger {
 
     public void showProducts(ArrayList<Product> products) {
         if (products.isEmpty()) {
-            Warn.debugMessage("No products found!");
+            showEmptyProducts();
             return;
         }
-
         printHeader("List of Products");
         int i = 1;
         for (Product product : products) {
-            String formatted = String.format("[%s] %s ₱%s", product.getKey(), product.getProductName(), product.getPrice());
+            final String productName = product.getProductName().substring(0, 1).toUpperCase() +
+                    product.getProductName().substring(1);
+            String formatted = String.format("[%s] %s ₱%s",
+                    product.getKey(), productName, product.getPrice());
             if (i % 3 == 0) println(formatted);
             else print(formatted + " ".repeat(20 - formatted.length()));
             i++;
         }
-
-        println("");
+        newLine();
     }
 
     public void askForOrder(int productsCount) {
@@ -54,7 +55,8 @@ public class ProductsPageView extends Messenger {
         for (Product product : cartItems) {
             totalPrice += product.getPrice();
             final String name = product.getProductName();
-            println(String.format(" · %s%s₱%s", name, generateSpaces(name.length() + 1), product.getPrice()));
+            println(String.format(" · %s%s₱%s",
+                    name, generateSpaces(name.length() + 1), product.getPrice()));
         }
         showTotalPrice(totalPrice);
         printDashSeparator();
@@ -67,6 +69,10 @@ public class ProductsPageView extends Messenger {
 
     public void showEmptyCart() {
         systemMessage("Cart is empty!");
+    }
+
+    public void showEmptyProducts() {
+        systemMessage("Products is empty!");
     }
 
     public void warnInsufficientMoney(String remainingMoney) {

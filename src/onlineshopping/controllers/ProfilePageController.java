@@ -23,7 +23,7 @@ public class ProfilePageController {
         } catch (UserBalanceException e) {
             view.showInvalidAmountMessage(User.MINIMUM_CASH_IN_AMOUNT, User.MAXIMUM_CASH_IN_AMOUNT);
         }
-        Navigator.reRunActiveRoute();
+        Navigator.rebuildActiveRoute();
     }
 
     private int askForAmount() {

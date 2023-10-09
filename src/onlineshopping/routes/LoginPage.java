@@ -4,6 +4,7 @@ import onlineshopping.controllers.LoginController;
 import onlineshopping.controllers.Navigator;
 import onlineshopping.interfaces.Credential;
 import onlineshopping.interfaces.Route;
+import onlineshopping.models.Admin;
 import onlineshopping.models.User;
 import onlineshopping.views.LoginPageView;
 
@@ -14,12 +15,20 @@ public class LoginPage implements Route {
         final LoginController controller = new LoginController(view);
         final Credential userForLogin = controller.promptLogin();
 
-        if (userForLogin == null) return;
+        if (userForLogin == null) {
+            Navigator.gotoLastRoute();
+            return;
+        }
 
-        final User user = controller.submitLoginCredential(userForLogin);
+        final Credential user = controller.submitLoginCredential(userForLogin);
         if (user == null) {
             build();
-        } else {
+            return;
+        }
+
+        if (user instanceof Admin) {
+            Navigator.runRouteManually(new AdminPage());
+        } else if (user instanceof User) {
             Navigator.runRouteManually(new HomePage());
         }
     }

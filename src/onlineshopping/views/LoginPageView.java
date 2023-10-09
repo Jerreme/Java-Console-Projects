@@ -16,7 +16,7 @@ public class LoginPageView extends Messenger {
     }
 
     public void showLoginFailed() {
-        systemMessage("Check your username and password.");
+        systemMessage("Check your username or password.");
     }
 
     public void showLoginAttemptCount(int remainingAttempt) {
